@@ -1,0 +1,8 @@
+Criando um projeto com react:
+
+npm create vite@latest
+nome_project
+select react
+select javascript
+npm i
+npm run dev 
