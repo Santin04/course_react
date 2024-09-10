@@ -6,3 +6,11 @@ select react
 select javascript
 npm i
 npm run dev 
+
+images:
+para inserir no site imagens que estão dentro da pasta public:
+<img src="/logo.png">
+
+para inserir no site imagens que estão dentro da pasta src/assets:
+import Image from "./assets/imagem.jpg";
+<img src={Image}>
