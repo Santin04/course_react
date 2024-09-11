@@ -7,6 +7,7 @@ const Props02 = ({ brand, km, color }) => {
             <p>Brand: {brand}</p>
             <p>Km: {km}</p>
             <p>Color: {color}</p>
+            <hr />
         </div>
     );
 
