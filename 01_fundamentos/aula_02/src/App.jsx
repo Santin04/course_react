@@ -6,6 +6,9 @@ import Props from './components/Props'
 import Props02 from './components/Props02'
 import PropsChildren from './components/PropsChildren'
 import PropsFunction from './components/PropsFunction'
+import { useState } from 'react'
+import Message from './components/Message'
+import EditMessage from './components/EditMessage'
 
 function App() {
 
@@ -18,6 +21,11 @@ function App() {
   const myFunction = () => {
     console.log('função passada por props');
   };
+
+  const [message, setMessage] = useState("mensagem antes da alteração")
+  const editMessage = (msg) => {
+    setMessage(msg);
+  }
 
   return (
     <div>
@@ -38,6 +46,9 @@ function App() {
       </PropsChildren>
       <hr />
       <PropsFunction func={myFunction} />
+      <hr />
+      <Message msg={message}/>
+      <EditMessage editMessageFunc={editMessage}/>
     </div>
   )
 }
