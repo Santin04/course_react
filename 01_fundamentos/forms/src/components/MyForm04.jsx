@@ -1,4 +1,12 @@
+import { useState } from "react";
+
 const MyForm04 = ({ user }) => {
+    const [name, setName] = useState(user.name);
+
+    const handleName = (e) => {
+        setName(e.target.value);
+    };
+
     return (
         <>
             <form>
@@ -7,7 +15,8 @@ const MyForm04 = ({ user }) => {
                     type="text"
                     name="name"
                     placeholder="Digite seu nome"
-                    value={user.name}
+                    onChange={handleName}
+                    value={name}
                 />
                 <input type="submit" value="Enviar" />
             </form>
