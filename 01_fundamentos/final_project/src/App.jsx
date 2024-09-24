@@ -18,6 +18,8 @@ const stages = [
     { id: 3, name: "end" },
 ];
 
+const guessesQty = 3;
+
 function App() {
     const [GameStage, setGameStage] = useState(stages[0].name);
     const [words] = useState(wordsList);
@@ -39,6 +41,8 @@ function App() {
     };
 
     const startGame = () => {
+        clearLetterStates();
+
         const { category, word } = pickWordAndCategory();
 
         let wordLetters = word.split("");
@@ -75,20 +79,51 @@ function App() {
                 ...actualWrongLetters,
                 normalLetter,
             ]);
+
+            //semelhante ao varName = varName - 1
+            setGuesses((actualGuesses) => actualGuesses - 1);
         }
-
-        //semelhante ao varName = varName - 1
-        setGuesses((actualGuesses) => actualGuesses - 1);
-    };
-
-    const retry = () => {
-        setGameStage(stages[0].name);
     };
 
     const [guessedLetters, setGuessedLetters] = useState([]);
     const [wrongLetters, setWrongLetters] = useState([]);
     const [guesses, setGuesses] = useState(3);
     const [score, setScore] = useState(0);
+
+    const clearLetterStates = () => {
+        setGuessedLetters([]);
+        setWrongLetters([]);
+    };
+
+    //monitorando a variavel que foi passada dentro de [], ou seja, toda vez que
+    //for alterado o valor de guesses, vai passar por aquele if
+    useEffect(() => {
+        if (guesses <= 0) {
+            //função que zera os states
+            clearLetterStates();
+
+            //exibindo a tela de game over
+            setGameStage(stages[2].name);
+        }
+    }, [guesses]);
+
+    useEffect(() => {
+        //com isso você cria um array aonde não vai ter valores repetidos
+        const uniqueLetters = new Set(letters);
+
+        if (guessedLetters.length == uniqueLetters.size) {
+            setScore((actualScore) => actualScore + 100);
+
+            startGame();
+        }
+    }, [guessedLetters, letters, startGame]);
+
+    const retry = () => {
+        setScore(0);
+        setGuesses(guessesQty);
+
+        setGameStage(stages[0].name);
+    };
 
     return (
         <div>
@@ -107,7 +142,9 @@ function App() {
                     score={score}
                 />
             ) : null}
-            {GameStage === "end" ? <GameOver retry={retry} /> : null}
+            {GameStage === "end" ? (
+                <GameOver retry={retry} score={score} />
+            ) : null}
         </div>
     );
 }
