@@ -1,0 +1,102 @@
+import "./App.css";
+import { useState, useEffect } from "react";
+import { useFetch } from "./hooks/useFetch";
+
+const url = "http://localhost:3000/products";
+
+function App() {
+    //comentando porque com o hooks, começamos a usar o useState que está dentro
+    //dele
+    // const [product, setProduct] = useState([]);
+
+    const [name, setName] = useState("");
+    const [price, setPrice] = useState("");
+
+    //resgatando dados
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const res = await fetch(url);
+    //             const data = await res.json();
+    //             setProduct(data);
+    //         } catch (error) {
+    //             console.error("Erro ao buscar os produtos:", error);
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []);
+
+    //praticamente colocamos o código comentado acima em um arquivo dentro da
+    //pasta hooks, para assim ficar mais curto e organizado o código
+    const { data: items } = useFetch(url);
+
+    //adicionando produto
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        //passando os dados do produto
+        const newProduct = {
+            name,
+            price,
+        };
+
+        //adicionando o produto na API
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "aplicattion/json",
+            },
+            body: JSON.stringify(newProduct),
+        });
+
+        //carregamento dinâmico dos dados
+        const addedProduct = await res.json();
+
+        //pegando
+        setProduct((prevProduct) => [...prevProduct, addedProduct]);
+    };
+
+    return (
+        <div className="App">
+            <h1>Lista de produtos</h1>
+            {items &&
+                items.map((item) => (
+                    <div key={item.id}>
+                        <p>
+                            {item.name} - R$ {item.price}
+                        </p>
+                    </div>
+                ))}
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        Nome:
+                        <input
+                            type="text"
+                            value={name}
+                            name="name"
+                            onChange={(e) => {
+                                setName(e.target.value);
+                            }}
+                        />
+                    </label>
+                    <label>
+                        Preço:
+                        <input
+                            type="number"
+                            value={price}
+                            name="price"
+                            onChange={(e) => {
+                                setPrice(e.target.value);
+                            }}
+                        />
+                    </label>
+                    <input type="submit" value="Criar" />
+                </form>
+            </div>
+        </div>
+    );
+}
+
+export default App;
