@@ -1,3 +1,10 @@
+//resumindo tudo que foi feito:
+// - foi feito o resgate de dados de uma API, foi mostrado também como enviar um
+//   dado para a API, tudo isso no arquivo App.jsx, depois disso foi mostrado
+//   como organizar melhor o código, passando o resgate de dados para um arquivo
+//   separado e só chamamos uma função que já traz os dados da API, também foi
+//   mostrado como organizar melhor a parte de enviar dados para a API
+
 import "./App.css";
 import { useState, useEffect } from "react";
 import { useFetch } from "./hooks/useFetch";
@@ -12,7 +19,7 @@ function App() {
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
 
-    //resgatando dados
+    // // resgatando dados
     // useEffect(() => {
     //     const fetchData = async () => {
     //         try {
@@ -27,9 +34,7 @@ function App() {
     //     fetchData();
     // }, []);
 
-    //praticamente colocamos o código comentado acima em um arquivo dentro da
-    //pasta hooks, para assim ficar mais curto e organizado o código
-    const { data: items } = useFetch(url);
+    const { data: items, httpConfig } = useFetch(url);
 
     //adicionando produto
     const handleSubmit = async (e) => {
@@ -41,20 +46,24 @@ function App() {
             price,
         };
 
-        //adicionando o produto na API
-        const res = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "aplicattion/json",
-            },
-            body: JSON.stringify(newProduct),
-        });
+        // //adicionando o produto na API
+        // const res = await fetch(url, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "aplicattion/json",
+        //     },
+        //     body: JSON.stringify(newProduct),
+        // });
 
-        //carregamento dinâmico dos dados
-        const addedProduct = await res.json();
+        // //carregamento dinâmico dos dados
+        // const addedProduct = await res.json();
 
-        //pegando
-        setProduct((prevProduct) => [...prevProduct, addedProduct]);
+        // setProduct((prevProduct) => [...prevProduct, addedProduct]);
+
+        httpConfig(newProduct, "POST");
+
+        setName("");
+        setPrice("");
     };
 
     return (
