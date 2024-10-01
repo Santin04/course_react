@@ -7,6 +7,9 @@ export const useFetch = (url) => {
     const [method, setMethod] = useState(null);
     const [callFetch, setCallFetch] = useState(false);
 
+    //loading
+    const [loading, setLoading] = useState(false);
+
     //configurando o envio de dados
     const httpConfig = (data, method) => {
         if (method === "POST") {
@@ -23,6 +26,9 @@ export const useFetch = (url) => {
 
     //puxando dado da API
     useEffect(() => {
+        //loading
+        setLoading(true)
+
         const fetchData = async () => {
             const res = await fetch(url);
             const json = await res.json();
@@ -30,6 +36,7 @@ export const useFetch = (url) => {
         };
 
         fetchData();
+        setLoading(true)
     }, [url, callFetch]);
 
     //enviando dados para a API assim que a config for enviada
@@ -45,5 +52,5 @@ export const useFetch = (url) => {
         httpRequest();
     }, [config, method, url]);
 
-    return { data, httpConfig };
+    return { data, httpConfig, loading };
 };
