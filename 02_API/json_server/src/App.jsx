@@ -34,7 +34,7 @@ function App() {
     //     fetchData();
     // }, []);
 
-    const { data: items, httpConfig } = useFetch(url);
+    const { data: items, httpConfig, loading } = useFetch(url);
 
     //adicionando produto
     const handleSubmit = async (e) => {
@@ -69,6 +69,8 @@ function App() {
     return (
         <div className="App">
             <h1>Lista de produtos</h1>
+            {/* loading */}
+            {loading && <p>Carregando dados</p>}
             {items &&
                 items.map((item) => (
                     <div key={item.id}>
@@ -101,7 +103,8 @@ function App() {
                             }}
                         />
                     </label>
-                    <input type="submit" value="Criar" />
+                    {loading && <input type="submit" disabled value="Aguarde" />}
+                    {!loading && <input type="submit" value="Criar" />}
                 </form>
             </div>
         </div>
