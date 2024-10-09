@@ -13,7 +13,9 @@ function App() {
             <BrowserRouter>
                 <NavBar />
                 <Routes>
+                    {/* home: aonde está sendo usado o context */}
                     <Route path="/" element={<Home />} />
+                    {/* about: aonde está sendo usado o context com hooks */}
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="*" element={<NotFound />} />
@@ -22,5 +24,9 @@ function App() {
         </div>
     );
 }
+
+// no hooks o arquivo usa um context, e dessa forma você coloca o context em um
+// arquivo e só importa esse arquivo e suas funcionalidades, em vez de ter que
+// importar toda vez o context e criar as funcionalidades
 
 export default App;
